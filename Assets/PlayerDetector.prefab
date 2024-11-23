@@ -78,6 +78,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 6148519108867374140}
   TargetColliders: []
+  ForceActiveOthers: []
 --- !u!114 &6148519108867374140
 MonoBehaviour:
   m_ObjectHideFlags: 0

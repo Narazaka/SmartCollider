@@ -1,4 +1,5 @@
-﻿using UdonSharp;
+﻿using System;
+using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
@@ -10,19 +11,35 @@ namespace Narazaka.VRChat.SmartCollider
     public class SmartCollider : UdonSharpBehaviour
     {
         [SerializeField] Collider[] TargetColliders;
+        [SerializeField] SmartCollider[] ForceActiveOthers;
 
         float _y;
         bool _active = true;
+        bool _previousActive = true;
+        int _forceActiveCount;
+        public int ForceActiveCount
+        {
+            get => _forceActiveCount;
+            set
+            {
+                if (_forceActiveCount == value) return;
+                _forceActiveCount = value;
+                if (_forceActiveCount < 0) _forceActiveCount = 0;
+                SetCollidersActive();
+            }
+        }
 
         void OnEnable()
         {
             SetY();
-            SetCollidersActive(false);
+            _active = false;
+            SetCollidersActive();
         }
 
         void OnDisable()
         {
-            SetCollidersActive(false);
+            _active = false;
+            SetCollidersActive();
         }
 
         public override void OnPlayerTriggerEnter(VRCPlayerApi player)
@@ -30,32 +47,41 @@ namespace Narazaka.VRChat.SmartCollider
             if (!player.isLocal) return;
 
             SetY();
-            SetCollidersActive(player.GetPosition().y >= _y);
+            _active = player.GetPosition().y >= _y;
+            SetCollidersActive();
         }
 
         public override void OnPlayerTriggerStay(VRCPlayerApi player)
         {
             if (!player.isLocal) return;
 
-            SetCollidersActive(player.GetPosition().y >= _y);
+            _active = player.GetPosition().y >= _y;
+            SetCollidersActive();
         }
 
         public override void OnPlayerTriggerExit(VRCPlayerApi player)
         {
             if (!player.isLocal) return;
 
-            SetCollidersActive(false);
+            _active = false;
+            SetCollidersActive();
         }
 
-        void SetCollidersActive(bool active)
+        void SetCollidersActive()
         {
-            if (_active == active) return;
+            var active = _active || _forceActiveCount > 0;
+            if (_previousActive == active) return;
 
-            _active = active;
+            _previousActive = active;
             var len = TargetColliders.Length;
             for (var i = 0; i < len; i++)
             {
                 TargetColliders[i].enabled = active;
+            }
+            len = ForceActiveOthers.Length;
+            for (var i = 0; i < len; i++)
+            {
+                ForceActiveOthers[i].ForceActiveCount += active ? 1 : -1;
             }
         }
 

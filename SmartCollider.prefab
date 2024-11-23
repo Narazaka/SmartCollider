@@ -79,6 +79,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 3117645225418871822}
   TargetColliders:
   - {fileID: 5329257817477591654}
+  ForceActiveOthers: []
 --- !u!114 &3117645225418871822
 MonoBehaviour:
   m_ObjectHideFlags: 0
