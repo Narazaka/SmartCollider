@@ -20,6 +20,11 @@ namespace Narazaka.VRChat.SmartCollider
             SetCollidersActive(false);
         }
 
+        void OnDisable()
+        {
+            SetCollidersActive(false);
+        }
+
         public override void OnPlayerTriggerEnter(VRCPlayerApi player)
         {
             if (!player.isLocal) return;
