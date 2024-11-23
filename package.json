@@ -1,0 +1,17 @@
+{
+  "name": "net.narazaka.vrchat.smart-collider",
+  "version": "1.0.0",
+  "displayName": "Smart Collider",
+  "description": "Collider to ride when you want to ride / 乗りたいときに乗れるコライダー",
+  "author": {
+    "name": "Narazaka",
+    "url": "https://github.com/Narazaka"
+  },
+  "license": "Zlib",
+  "type": "tool",
+  "url" : "https://github.com/Narazaka/SmartCollider.git",
+  "vpmDependencies": {
+    "com.vrchat.worlds": ">=3 <4"
+  },
+  "unity": "2019.4"
+}
